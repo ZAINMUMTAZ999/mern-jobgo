@@ -87,7 +87,7 @@ loginRouter.get(
   }
 );
 
-loginRouter.post("/logout", (req: Request, res: Response) => {
+loginRouter.post("/logout", ( res: Response) => {
   res.cookie("auth_token", "", {
     expires: new Date(0),
   });
