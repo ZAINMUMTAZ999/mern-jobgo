@@ -1,11 +1,19 @@
 import { registerUserTypes } from "./pages/Register";
 import { AddJobTypes } from "../../backend/src/models/addJob.models";
 import { jobSearchResponse } from "../../backend/src/routes/loginRouter";
-const Base_Url_API = import.meta.env.VITE_API_BSE_URL || "";
-type loginUserTypes = {
-  email: string;
-  password: string;
-};
+// const Base_Url_API = import.meta.env.VITE_API_BSE_URL || "";
+// const Base_Url_API = import.meta.env.PROD 
+//   ? '/.netlify/functions/api'
+//   : '/api';
+const Base_Url_API = import.meta.env.PROD 
+  ? '/api' 
+  : import.meta.env.FRONTEND_URL;
+
+  type loginUserTypes = {
+    email: string;
+    password: string;
+  };
+  console.log(Base_Url_API)
 const registerApi = async (formDatajson: registerUserTypes) => {
   const response = await fetch(`${Base_Url_API}/register`, {
     method: "POST",
@@ -36,8 +44,10 @@ const loginApi = async (formDatajson: loginUserTypes) => {
     console.log("login Api 30");
     throw new Error("login Error Api");
   }
+  console.log("response:", responseBody);
   return responseBody;
 };
+
 const validateToken = async () => {
   const response = await fetch(`${Base_Url_API}/validate-token`, {
     credentials: "include",
@@ -50,12 +60,13 @@ const validateToken = async () => {
 const LogoutApi = async () => {
   const response = await fetch(`${Base_Url_API}/logout`, {
     credentials: "include",
-    method: "POST"
+    method: "POST",
+ 
   });
   if (!response.ok) {
     throw new Error("logout api not fetch");
   }
-
+  return response.json();
 };
 
 const AddJobApi = async (formData: FormData) => {
